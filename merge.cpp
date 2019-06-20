@@ -1,78 +1,75 @@
 #include <iostream>
 
-void merge_sort(int *a, int *w, int num);
-void merge_sort_helper(int *a, int start, int end, int* b);
-void merge(int *a, int start, int mid, int end, int *b);
-void copy_array(int *a, int *b, int num);
-void print_array(int *a, int num);
+void merge_sort(int *A, int *W, size_t num);
+void merge_helper(int *A, size_t start, size_t end, int *B);
+void merge(int *A, size_t start, size_t mid, size_t end, int *B);
+void copy_array(int *A, int *B, size_t num);
+void print_array(int *A, size_t num);
 
-#define NUM 10
-int work_array[NUM];
+int STORAGE[256000];
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-	int array[NUM]={4,1,5,4,5,1,7,5,2,8};
+	int arr[] = {3243,234234,2,34,234,234234,23,42,34,2435,234,5,52,4,52345,2,4512,452,34,523,45,234,52435,234,5,2452,425,4,524};
+	size_t size = sizeof(arr)/sizeof(int);
 
-	merge_sort(array, work_array, NUM);
-	print_array(array, NUM);
+	print_array(arr, size);
+	merge_sort(arr, STORAGE, size);
+	print_array(arr, size);
 
 	return 0;
 }
 
-
-void merge_sort(int *a, int *w, int num)
+void merge_sort(int *A, int *W, size_t num)
 {
-	copy_array(a, w, num);
-	merge_sort_helper(a, 0, num, w);
+	copy_array(A, W, num);
+	merge_helper(A, 0, num, W);
 }
 
-void merge_sort_helper(int *a, int start, int end, int* b)
+void merge_helper(int *A, size_t start, size_t end, int *B)
 {
-	if (end-start < 2)
+	if (end - start < 2)
 	{
 		return;
 	}
 
-	int mid = (start+end)/2;
+	size_t mid = (start + end)/2;
 
-	merge_sort_helper(b, start, mid, a);
-	merge_sort_helper(b, mid, end, a);
-
-	merge(a, start, mid, end, b);
+	merge_helper(B, start, mid, A);
+	merge_helper(B, mid, end, A);
+	merge(A, start, mid, end, B);
 }
 
-void merge(int *a, int start, int mid, int end, int *b)
+void merge(int *A, size_t start, size_t mid, size_t end, int *B)
 {
-	int j = start;
-	int k = mid;
-
-	for (int i = start; i < end; i++)
+	size_t j = start;
+	size_t k = mid;
+	for (size_t i = start; i < end; i++)
 	{
-		if (j < mid && (k >= end || b[j]<=b[k]))
+		if (j < mid && (k >= end || B[j]<=B[k]))
 		{
-			a[i] = b[j++];
+			A[i] = B[j++];
 		}
 		else
 		{
-			a[i] = b[k++];
+			A[i] = B[k++];
 		}
 	}
 }
 
-void copy_array(int *a, int *b, int num)
+void copy_array(int *A, int *B, size_t num)
 {
-	for (int i = 0; i < num; i++)
+	for (size_t i = 0; i < num; i++)
 	{
-		b[i] = a[i];
+		B[i] = A[i];
 	}
 }
 
-void print_array(int *a, int num)
+void print_array(int *A, size_t num)
 {
-	for (int i = 0; i < num; i++)
+	for (size_t i = 0; i < num; i++)
 	{
-		std::cout<<a[i]<<" ";
+		std::cout<<A[i]<<" ";
 	}
-
 	std::cout<<std::endl;
 }
